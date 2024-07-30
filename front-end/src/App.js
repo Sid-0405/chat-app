@@ -1,17 +1,19 @@
 import "./App.css";
-import { Route } from "react-router-dom";
-import Homepage from "./pages/Homepage.js";
-import Chatpage from "./pages/Chatpage.js";
+import { Routes, Route } from "react-router-dom";
+import Homepage from "./pages/Homepage";
+import Chatpage from "./pages/Chatpage";
+import NotFound from "./pages/notFound"; // Import the NotFound component
 
 function App() {
   return (
     <div className="App">
-      <Route path="/" component={Homepage} exact />
-      <Route path="/chats" component={Chatpage} />
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/chats" element={<Chatpage />} />
+        <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
+      </Routes>
     </div>
   );
 }
 
 export default App;
-
-

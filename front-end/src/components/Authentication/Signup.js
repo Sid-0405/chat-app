@@ -5,19 +5,13 @@ import { VStack } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import axios from "axios";
 import { useState } from "react";
-import { useHistory } from "react-router";
-import { Cloudinary } from '@cloudinary/url-gen';
-import { auto } from '@cloudinary/url-gen/actions/resize';
-import { autoGravity } from '@cloudinary/url-gen/qualifiers/gravity';
-import { AdvancedImage } from '@cloudinary/react';
-
-
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const toast = useToast();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [name, setName] = useState();
   const [email, setEmail] = useState();
@@ -25,10 +19,6 @@ const Signup = () => {
   const [password, setPassword] = useState();
   const [pic, setPic] = useState();
   const [picLoading, setPicLoading] = useState(false);
- 
-
-
-
 
   const submitHandler = async () => {
     setPicLoading(true);
@@ -80,7 +70,7 @@ const Signup = () => {
       });
       localStorage.setItem("userInfo", JSON.stringify(data));
       setPicLoading(false);
-      history.push("/chats");
+      navigate("/chats");
     } catch (error) {
       toast({
         title: "Error Occured!",
@@ -93,15 +83,6 @@ const Signup = () => {
       setPicLoading(false);
     }
   };
-
-  const cld = new Cloudinary({ cloud: { cloudName: 'dzfponhdj' } });
-  
-  // Use this sample image or upload your own via the Media Explorer
-  // const img = (event)=> cld
-  //       .image(event)
-  //       .format('auto') // Optimize delivery by resizing and applying auto-format and auto-quality
-  //       .quality('auto')
-  //       .resize(auto().gravity(autoGravity()).width(500).height(500)); // Transform the image: auto-crop to square aspect_ratio
 
   const postDetails = (pics) => {
     setPicLoading(true);
@@ -120,12 +101,12 @@ const Signup = () => {
       const data = new FormData();
       data.append("file", pics);
       data.append("upload_preset", "chat-app");
-      data.append("cloud_name", "dzfponhdj");                                        // add your API link 
-   fetch("https://api.cloudinary.com/v1_1/dzfponhdj/image/upload", {
+      data.append("cloud_name", "dzfponhdj"); // add your API link
+      fetch("https://api.cloudinary.com/v1_1/dzfponhdj/image/upload", {
         method: "post",
         body: data,
       })
-        .then((res) => res.json())    
+        .then((res) => res.json())
         .then((data) => {
           setPic(data.url.toString());
           console.log(data.url.toString());
